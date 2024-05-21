@@ -29,16 +29,12 @@ dotenv.config({ path: './config.env' });
   }
 }); */
 
-sendMail()
-  .then(() => {
-    console.log('Email sent successfully.');
-  })
-  .catch(error => {
-    console.error('Error sending email:', error);
-  });
-
-// 在應用啟動時執行資料抓取和處理
-
+// 程式出現重大錯誤時
+process.on('uncaughtException', err => {
+  console.error('Uncaughted Exception！')
+  console.error(err);
+  process.exit(1);
+});
 
 // 每天八點发送一次邮件
 cron.schedule('0 8 * * *', () => {
@@ -49,4 +45,11 @@ cron.schedule('0 8 * * *', () => {
     .catch(error => {
       console.error('Error sending email:', error);
     });
+});
+
+
+// 未捕捉到的 catch 
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('未捕捉到的 rejection：', promise, '原因：', reason);
+  
 });
