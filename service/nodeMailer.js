@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
   host: 'capital-bus.com.tw',
   port: 25,  // SMTP port
-  secure: true,  // true for 465, false for other ports
+  secure: false,  // true for 465, false for other ports
   auth: {
     user: 'sodu_service@capital-bus.com.tw',  // your email address
     pass: 'cPsS9620',  // your email password
@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 
 const mailOptions = {
   from: 'sodu_service@capital-bus.com.tw',
-  to: 'winer909@gmail.com',
+  to: 'winer909@gmail.com, 801@capital-bus.com.tw',
   subject: 'Sending Email using Node.js',
   text: 'That was easy!'
 };

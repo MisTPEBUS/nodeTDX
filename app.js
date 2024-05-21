@@ -1,14 +1,11 @@
-const express = require('express');
-const cron = require('node-cron');
 const axios = require('axios');
 const sql = require('mssql');
-const moment = require('moment');
+const cron = require('node-cron');
 const dotenv = require('dotenv');
 const { sendMail } = require('./service/nodeMailer');
 
 dotenv.config({ path: './config.env' });
 
-const app = express();
 
 // Your SQL configuration and connection logic here...
 
@@ -40,6 +37,16 @@ sendMail()
     console.error('Error sending email:', error);
   });
 
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
+// 在應用啟動時執行資料抓取和處理
+main();
+
+// 設置定時任務，每天早上8點執行
+cron.schedule('*/10 * * * * *', () => {
+  sendMail()
+    .then(() => {
+      console.log('Daily email sent.');
+    })
+    .catch(error => {
+      console.error('Error sending daily email:', error);
+    });
 });
