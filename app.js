@@ -38,15 +38,15 @@ sendMail()
   });
 
 // 在應用啟動時執行資料抓取和處理
-main();
 
-// 設置定時任務，每天早上8點執行
-cron.schedule('*/10 * * * * *', () => {
+
+// 每天八點发送一次邮件
+cron.schedule('0 8 * * *', () => {
   sendMail()
-    .then(() => {
-      console.log('Daily email sent.');
+    .then(res => {
+      console.log(res);
     })
     .catch(error => {
-      console.error('Error sending daily email:', error);
+      console.error('Error sending email:', error);
     });
 });

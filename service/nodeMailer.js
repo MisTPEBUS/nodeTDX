@@ -17,7 +17,7 @@ const mailOptions = {
   from: 'sodu_service@capital-bus.com.tw',
   to: 'winer909@gmail.com, 801@capital-bus.com.tw',
   subject: 'Sending Email using Node.js',
-  text: 'That was easy!'
+  text: 'TDX定時排呈測試 '
 };
 
 const sendMail = () => {
