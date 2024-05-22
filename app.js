@@ -3,31 +3,8 @@ const sql = require('mssql');
 const cron = require('node-cron');
 const dotenv = require('dotenv');
 const { sendMail } = require('./service/nodeMailer');
-
+const sql = require('./service/sql');
 dotenv.config({ path: './config.env' });
-
-
-// Your SQL configuration and connection logic here...
-
-// Example of scheduling a task with cron
-/* cron.schedule('0 0 1 * *', async () => {
-  try {
-    const apiResponse = await axios.get('your_api_endpoint');
-    const tableName = `station${moment().format('YYYYMMDD')}`;
-    const query = `CREATE TABLE ${tableName} (id INT, data NVARCHAR(MAX))`;
-
-    // Create new table
-    await sql.query(query);
-
-    // Insert data
-    apiResponse.data.forEach(async (item) => {
-      const insertQuery = `INSERT INTO ${tableName} (id, data) VALUES (${item.id}, '${item.data}')`;
-      await sql.query(insertQuery);
-    });
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}); */
 
 // 程式出現重大錯誤時
 process.on('uncaughtException', err => {
@@ -36,8 +13,29 @@ process.on('uncaughtException', err => {
   process.exit(1);
 });
 
+/* 
+async function main() {
+  let pool;
+  const tableName = `station${new Date().toISOString().split('T')[0].replace(/-/g, '')}`;
+
+  try {
+    const data = await fetchData();
+    pool = await connectToDatabase();
+    await createTable(pool, tableName);
+    await insertData(pool, tableName, data);
+    console.log('Data fetching and insertion completed.');
+  } catch (error) {
+    console.error('Error in main execution:', error);
+  } finally {
+    sql.close();
+  }
+}
+
+// 在應用啟動時執行資料抓取和處理
+main(); */
+sql.connectToDatabase();
 // 每天八點发送一次邮件
-cron.schedule('0 8 * * *', () => {
+cron.schedule('0 8 1 * *', () => {
   sendMail()
     .then(res => {
       console.log(res);
@@ -47,9 +45,8 @@ cron.schedule('0 8 * * *', () => {
     });
 });
 
-
 // 未捕捉到的 catch 
 process.on('unhandledRejection', (reason, promise) => {
   console.error('未捕捉到的 rejection：', promise, '原因：', reason);
-  
+
 });
