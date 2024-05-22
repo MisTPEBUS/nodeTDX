@@ -3,7 +3,7 @@ const sql = require('mssql');
 const cron = require('node-cron');
 const dotenv = require('dotenv');
 const { sendMail } = require('./service/nodeMailer');
-const sql = require('./service/sql');
+const SQL = require('./service/sql');
 dotenv.config({ path: './config.env' });
 
 // 程式出現重大錯誤時
@@ -33,7 +33,7 @@ async function main() {
 
 // 在應用啟動時執行資料抓取和處理
 main(); */
-sql.connectToDatabase();
+SQL.connectToDatabase();
 // 每天八點发送一次邮件
 cron.schedule('0 8 1 * *', () => {
   sendMail()
