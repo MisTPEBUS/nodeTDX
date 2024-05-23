@@ -26,8 +26,6 @@ async function fetchData() {
     }
 }
 
-
-
 async function connectToDatabase() {
     try {
         const pool = await sql.connect(mssqlConfig);
@@ -40,7 +38,19 @@ async function connectToDatabase() {
 }
 
 async function createTable(pool, tableName) {
-    const createTableQuery = `CREATE TABLE ${tableName} (id INT, data NVARCHAR(MAX))`;
+    
+    const createTableQuery = `
+        CREATE TABLE ${tableName} (
+            StationGroupID nvarchar(50) NOT NULL,
+            StationUID nvarchar(50) NOT NULL,
+            StopUID nvarchar(50) NOT NULL,
+            StopID nvarchar(50) NOT NULL,
+            StopNameZh nvarchar(50) NOT NULL,
+            StopSequence int NOT NULL,
+            StopLat nvarchar(50) NOT NULL,
+            StopLon nvarchar(50) NOT NULL
+        )
+    `;
     try {
         await pool.request().query(createTableQuery);
         console.log(`Table ${tableName} created.`);
