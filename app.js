@@ -30,12 +30,11 @@ async function main() {
     sql.close();
   }
 }
-
 // 在應用啟動時執行資料抓取和處理
 main(); */
 async function main() {
   let pool = await SQL.connectToDatabase();
-  SQL.createTable(pool,TDXTest);
+  SQL.createTable(pool,'TDXTest');
 }
 main();
 

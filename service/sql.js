@@ -35,14 +35,14 @@ async function connectToDatabase() {
         console.error('Error connecting to SQL Server:', error);
         throw error;
     }
-    finally {
-        await sql.close()
-    }
+    
 }
 
 async function createTable(pool, tableName) {
 
     const createTableQuery = `
+    IF OBJECT_ID(N'dbo.${tableName}', N'U') IS NULL 
+    BEGIN
         CREATE TABLE ${tableName} (
             StationGroupID nvarchar(50) NOT NULL,
             StationUID nvarchar(50) NOT NULL,
@@ -53,7 +53,13 @@ async function createTable(pool, tableName) {
             StopLat nvarchar(50) NOT NULL,
             StopLon nvarchar(50) NOT NULL
         )
-    `;
+        PRINT 'Table ${tableName} created.'
+    END
+    ELSE
+    BEGIN
+        PRINT 'Table ${tableName} already exists.'
+    END
+`;
     try {
         await pool.request().query(createTableQuery);
         console.log(`Table ${tableName} created.`);
