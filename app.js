@@ -33,8 +33,13 @@ async function main() {
 
 // 在應用啟動時執行資料抓取和處理
 main(); */
-SQL.connectToDatabase();
-// 每天八點发送一次邮件
+async function main() {
+  let pool = await SQL.connectToDatabase();
+  SQL.createTable(pool,TDXTest);
+}
+main();
+
+// 每月第一天八點发送一次邮件
 cron.schedule('0 8 1 * *', () => {
   sendMail()
     .then(res => {
