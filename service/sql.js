@@ -35,10 +35,13 @@ async function connectToDatabase() {
         console.error('Error connecting to SQL Server:', error);
         throw error;
     }
+    finally {
+        await sql.close()
+    }
 }
 
 async function createTable(pool, tableName) {
-    
+
     const createTableQuery = `
         CREATE TABLE ${tableName} (
             StationGroupID nvarchar(50) NOT NULL,
@@ -54,6 +57,7 @@ async function createTable(pool, tableName) {
     try {
         await pool.request().query(createTableQuery);
         console.log(`Table ${tableName} created.`);
+
     } catch (error) {
         console.error('Error creating table:', error);
         throw error;
