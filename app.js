@@ -13,34 +13,46 @@ process.on('uncaughtException', err => {
   process.exit(1);
 });
 
-/* 
-async function main() {
-  let pool;
-  const tableName = `station${new Date().toISOString().split('T')[0].replace(/-/g, '')}`;
+// 將環境變量轉換為數組
+const Types = process.env.MOTC_TYPES.split(',');
+const Codes = process.env.MOTC_CODES.split(',');
 
-  try {
-    const data = await fetchData();
-    pool = await connectToDatabase();
-    await createTable(pool, tableName);
-    await insertData(pool, tableName, data);
-    console.log('Data fetching and insertion completed.');
-  } catch (error) {
-    console.error('Error in main execution:', error);
-  } finally {
-    sql.close();
+console.log(Types)
+console.log(Codes)
+
+async function fetchData(type,code){
+  const url =  `https://ticp.motc.gov.tw/motcTicket/api/StopOfRoute/${code}/Operator/${type}?$format=json`;
+  try{
+   // const response = await axios.get(url).then();
+   console.log('url',url)
+  }
+  catch(error){
+    console.error(`Error fetching data for Type: ${type}, Code: ${code}`, error);
   }
 }
-// 在應用啟動時執行資料抓取和處理
-main(); */
-async function main() {
-  let pool = await SQL.connectToDatabase();
-  SQL.createTable(pool,'TDXTest');
+async function fetchAllData() {
+ 
+  Types.forEach(TYPES => {
+    Codes.forEach(CODES => {
+       fetchData(TYPES, CODES);
+    });
+  });
 }
-main();
 
+async function main() {
+ /*  let pool = await SQL.connectToDatabase();
+  SQL.createTable(pool,'TDXTest'); */
+
+  fetchAllData();
+  
+}
+
+main();
 // 每月第一天八點发送一次邮件
 cron.schedule('0 8 1 * *', () => {
-  sendMail()
+  let tittle =  'Sending Email using Node.js';
+let msg = 'TDX定時排呈測試 ';
+  sendMail(tittle,msg)
     .then(res => {
       console.log(res);
     })

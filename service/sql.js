@@ -40,24 +40,20 @@ async function connectToDatabase() {
 
 async function createTable(pool, tableName) {
 
+   
     const createTableQuery = `
     IF OBJECT_ID(N'dbo.${tableName}', N'U') IS NULL 
     BEGIN
         CREATE TABLE ${tableName} (
-            StationGroupID nvarchar(50) NOT NULL,
+            StationGroupID nvarchar(50) ,
             StationUID nvarchar(50) NOT NULL,
             StopUID nvarchar(50) NOT NULL,
             StopID nvarchar(50) NOT NULL,
             StopNameZh nvarchar(50) NOT NULL,
-            StopSequence int NOT NULL,
+            StopSequence int ,
             StopLat nvarchar(50) NOT NULL,
             StopLon nvarchar(50) NOT NULL
         )
-        PRINT 'Table ${tableName} created.'
-    END
-    ELSE
-    BEGIN
-        PRINT 'Table ${tableName} already exists.'
     END
 `;
     try {

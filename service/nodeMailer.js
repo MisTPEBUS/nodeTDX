@@ -20,7 +20,9 @@ const mailOptions = {
   text: 'TDX定時排呈測試 '
 };
 
-const sendMail = () => {
+const sendMail = (tittle,msg) => {
+  mailOptions.text=msg;
+  mailOptions.subject=tittle;
   return new Promise((resolve, reject) => {
     transporter.sendMail(mailOptions, function(error, info){
       if (error) {
