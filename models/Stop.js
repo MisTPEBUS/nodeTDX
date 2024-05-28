@@ -13,21 +13,21 @@ const Stop = sequelize.define('Stop', {
   StopNameZh: {
     type: DataTypes.STRING
   },
-  StopNameEn: {
-    type: DataTypes.STRING
-  },
+  
   StopBoarding: {
     type: DataTypes.INTEGER
   },
   StopSequence: {
     type: DataTypes.INTEGER
   },
+
   PositionLat: {
     type: DataTypes.FLOAT
   },
   PositionLon: {
     type: DataTypes.FLOAT
   },
+
   StationID: {
     type: DataTypes.STRING
   },
